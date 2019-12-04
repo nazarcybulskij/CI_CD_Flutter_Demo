@@ -29,8 +29,6 @@ jobs:
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
           file: coverage/lcov.info
-          yml: ./codecov.yml
-
 
   drive_ios:
     #creates a build matrix for your jobs
@@ -41,7 +39,7 @@ jobs:
           - "iPhone 8 (13.1)"
           - "iPhone 11 Pro Max (13.1)"
       fail-fast: false
-    if conditional to prevent a job from running
+    #if conditional to prevent a job from running
     if: github.event_name != 'pull_request'
     runs-on: macos-latest
     #Identifies any jobs that must complete successfully before this job will run.
@@ -71,7 +69,7 @@ jobs:
 
 
   drive_android:
-    if conditional to prevent a job from running
+    #if conditional to prevent a job from running
     if: github.event_name != 'pull_request'
     runs-on: macos-latest
     #creates a build matrix for your jobs
@@ -99,7 +97,7 @@ jobs:
           script: flutter drive --target=test_driver/app.dart
 
   build_deploy:
-    if conditional to prevent a job from running
+    #if conditional to prevent a job from running
     if: github.event_name != 'pull_request'
     runs-on: macos-latest
     #Identifies any jobs that must complete successfully before this job will run.
