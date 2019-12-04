@@ -23,7 +23,13 @@ jobs:
       # run static analys code
       - run: flutter  analyze
       # run  flutter widgets tests  and unit tests
-      - run: flutter test
+      - run: flutter test --coverage
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v1
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          file: coverage/lcov.info
+          yml: ./codecov.yml
 
 
   drive_ios:
@@ -35,6 +41,8 @@ jobs:
           - "iPhone 8 (13.1)"
           - "iPhone 11 Pro Max (13.1)"
       fail-fast: false
+    if conditional to prevent a job from running
+    if: github.event_name != 'pull_request'
     runs-on: macos-latest
     #Identifies any jobs that must complete successfully before this job will run.
     needs: test
@@ -63,6 +71,8 @@ jobs:
 
 
   drive_android:
+    if conditional to prevent a job from running
+    if: github.event_name != 'pull_request'
     runs-on: macos-latest
     #creates a build matrix for your jobs
     strategy:
@@ -89,8 +99,8 @@ jobs:
           script: flutter drive --target=test_driver/app.dart
 
   build_deploy:
-    #if conditional to prevent a job from running
-    #if: github.event_name != 'pull_request'
+    if conditional to prevent a job from running
+    if: github.event_name != 'pull_request'
     runs-on: macos-latest
     #Identifies any jobs that must complete successfully before this job will run.
     needs: [drive_ios,drive_android,test]
